@@ -36,7 +36,8 @@ extern "C" fn mosquitto_auth_plugin_version() -> c_int {
     MOSQ_AUTH_PLUGIN_VERSION
 }
 
-/// Called after the plugin has been loaded and mosquitto_auth_plugin_version has been called.  This will only ever be called once and can be used to initialise the plugin.
+/// Called after the plugin has been loaded and mosquitto_auth_plugin_version has been called.  This will only ever be called once and can
+/// be used to initialise the plugin.
 ///
 /// PARAMETERS:
 ///
@@ -59,7 +60,8 @@ extern "C" fn mosquitto_auth_plugin_init(
     0
 }
 
-///Called when the broker is shutting down.  This will only ever be called once per plugin.  Note that mosquitto_auth_security_cleanup will be called directly before this function.
+///Called when the broker is shutting down.  This will only ever be called once per plugin.  Note that mosquitto_auth_security_cleanup will
+/// be called directly before this function.
 ///
 /// PARAMETERS:
 ///
@@ -84,7 +86,9 @@ extern "C" fn mosquitto_auth_plugin_cleanup(
 
 /// This function is called in two scenarios:
 ///
-/// 1.  When the broker starts up.  2. If the broker is requested to reload its configuration whilst running.  In this case, mosquitto_auth_security_cleanup will be called first, then this function will be called.  In this situation, the reload parameter will be true.
+/// 1.  When the broker starts up.  2. If the broker is requested to reload its configuration whilst running.  In this case,
+/// mosquitto_auth_security_cleanup will be called first, then this function will be called.  In this situation, the reload parameter will
+/// be true.
 ///
 /// PARAMETERS:
 ///
@@ -94,7 +98,8 @@ extern "C" fn mosquitto_auth_plugin_cleanup(
 ///
 /// opt_count:	The number of elements in the opts array.
 ///
-/// reload:	If set to false, this is the first time the function has been called.  If true, the broker has received a signal asking to reload its configuration.
+/// reload:	If set to false, this is the first time the function has been called.  If true, the broker has received a signal asking to
+/// reload its configuration.
 ///
 /// RETURN:
 ///
@@ -112,7 +117,8 @@ extern "C" fn mosquitto_auth_security_init(
 
 /// This function is called in two scenarios
 ///
-/// 1.  When the broker is shutting down.  2. If the broker is requested to reload its configuration whilst running.  In this case, this function will be called, followed by mosquitto_auth_security_init.  In this situation, the reload parameter will be true.
+/// 1.  When the broker is shutting down.  2. If the broker is requested to reload its configuration whilst running.  In this case, this
+/// function will be called, followed by mosquitto_auth_security_init.  In this situation, the reload parameter will be true.
 ///
 /// PARAMETERS:
 ///
@@ -122,7 +128,8 @@ extern "C" fn mosquitto_auth_security_init(
 ///
 /// opt_count:	The number of elements in the opts array.
 ///
-/// reload:	If set to false, this is the first time the function has been called.  If true, the broker has received a signal asking to reload its configuration./
+/// reload:	If set to false, this is the first time the function has been called.  If true, the broker has received a signal asking to
+/// reload its configuration.
 ///
 /// RETURN
 ///
@@ -148,7 +155,8 @@ extern "C" fn mosquitto_auth_security_cleanup(
 ///
 /// RETURN:
 ///
-/// MOSQ_ERR_SUCCESS: if access was granted.  MOSQ_ERR_ACL_DENIED: if access was not granted.  MOSQ_ERR_UNKNOWN: for an application specific error.  MOSQ_ERR_PLUGIN_DEFER: if your plugin does not wish to handle this check.
+/// MOSQ_ERR_SUCCESS: if access was granted.  MOSQ_ERR_ACL_DENIED: if access was not granted.  MOSQ_ERR_UNKNOWN: for an application specific
+/// error.  MOSQ_ERR_PLUGIN_DEFER: if your plugin does not wish to handle this check.
 #[no_mangle]
 extern "C" fn mosquitto_auth_acl_check(
     _user_data: *mut c_void,
