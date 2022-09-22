@@ -2,7 +2,7 @@
 
 
 ### Requirements:
- - sudo apt install clang
+ - sudo apt install llvm-dev libclang-dev clang
  - sudo apt install mosquitto-dev libmosquitto-dev
 
 ### Referencies:
