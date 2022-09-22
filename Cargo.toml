@@ -3,8 +3,11 @@ name = "mosquitto-auth0-plugin"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
+[lib]
+crate-type=["dylib"]
 
+[dependencies]
+libc = "0.2.133"
 
 [build-dependencies]
 bindgen = { version = "0.60.1", default-features = false, features = ["runtime"] }
