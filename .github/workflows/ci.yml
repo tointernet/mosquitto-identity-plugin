@@ -1,0 +1,67 @@
+name: ci
+
+on:
+  push:
+    branches: 
+      - "*"
+  pull_request:
+    branches: 
+      - "develop"
+      - "main"
+      
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install mosquitto
+        run: sudo apt-get install -y mosquitto mosquitto-clients
+
+      - name: Cargo test
+        run: cargo test --verbose
+        env:
+          RUST_TEST_THREADS: 1
+
+      - name: Cargo build
+        run: cargo build
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Cargo build
+        run: cargo build --release
+
+      # - name: Create Release
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ github.ref }}
+      #     release_name: Release ${{ github.ref }}
+      #     draft: false
+      #     prerelease: false
+          
+      # - name: Upload Release Asset
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   id: upload-release-asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./target/release/libmosquitto_jwt_auth.so
+      #     asset_name: libmosquitto_jwt_auth.so
+      #     asset_content_type: application/x-elf
