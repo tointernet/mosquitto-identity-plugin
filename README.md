@@ -1,5 +1,14 @@
 # Mosquitto Auth0 Plugin
 
+In a IoT platform one of the most important thing is that, ensure the device will be access only the resources which that device allowed to access.
+It's important because we in IoT platform don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
+the access to our platform is extremely importante for IoT. If this in mind this plugin allow us to create an ACL in our broker. Each user will have a group
+of Permissions called Roles and these permissions will granted or deny the access for the topics for publish or subscription.
+
+
+## Mosquitto Auth Workflow
+
+The Mosquitto broker give us a external API to build a custom plugin. This API is exposed in the [mosquitto_plugin.h](https://mosquitto.org/api/files/mosquitto_plugin-h.html) and the mosquitto broker will called each function following the diagram bellow:
 
 ### Requirements:
 - Docker CE
