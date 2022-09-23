@@ -1,6 +1,6 @@
 # Mosquitto Auth0 Plugin
 
-In a IoT platform one of the most important thing is ensure that, each device will be access only the resources which that device allowed to access.
+In a IoT platform one of the most important thing is ensure that, each device will be access only the resources which device is allowed to access.
 It's important because in IoT platform we don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
 the access to our platform is extremely importante for IoT. If this in mind this plugin allow us to create an ACL in our broker. Each user will have a group
 of Permissions called Roles and these permissions will granted or deny the access for the topics for publish or subscription.
