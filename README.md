@@ -9,7 +9,7 @@ asdf plugin-add rust https://github.com/code-lever/asdf-rust.git \
 && asdf install rust latest \
 && asdf global rust latest
 ```
-- LLVM CLang
+- LLVM, CLang
 ```bash
 sudo apt install llvm-dev libclang-dev clang
 ```
