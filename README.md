@@ -3,7 +3,7 @@
 In a IoT platform one of the most important thing is ensure that, each device will be access only the resources which device is allowed to access.
 It's important because in IoT platform we don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
 the access to our platform is extremely importante for IoT. With this in mind this plugin allow us to create an ACL for the [Mosquitto Broker](https://mosquitto.org/). Each user will have a group
-of Permissions called Roles and these permissions will granted or deny the access for the each topic, with that we can managed the publish and the subscription for each topic.
+of Permissions called Roles and these permissions will granted or deny the access for each topic, with that we can managed the publish and the subscription for each topic.
 
 
 ## Mosquitto Auth Workflow
