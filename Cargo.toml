@@ -1,5 +1,5 @@
 [package]
-name = "mosquitto-auth0-plugin"
+name = "mosquitto-identity-plugin"
 version = "0.1.0"
 edition = "2021"
 

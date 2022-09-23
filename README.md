@@ -1,4 +1,4 @@
-# Mosquitto Auth0 Plugin
+# Mosquitto Identity Plugin
 
 In a IoT platform one of the most important thing is ensure that, each device will be access only the resources which device is allowed to access.
 It's important because in IoT platform we don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
