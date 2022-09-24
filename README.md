@@ -10,6 +10,10 @@ of Permissions called Roles and these permissions will granted or deny the acces
 
 The Mosquitto broker give us a external API to build a custom plugin. This API is exposed in the [mosquitto_plugin.h](https://mosquitto.org/api/files/mosquitto_plugin-h.html) and the mosquitto broker will called each function following the diagram bellow:
 
+<div align="center">
+<img src="./docs/flow.png" />
+</div>
+
 ### Requirements:
 - Docker CE
 - Rust LTS
