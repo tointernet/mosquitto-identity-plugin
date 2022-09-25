@@ -1,4 +1,7 @@
+use crate::identity::IdentityPlugin;
+
 use super::defs::{mosquitto_opt, MOSQ_AUTH_PLUGIN_VERSION, MOSQ_SUCCESS};
+use std::ffi::CStr;
 use std::os::raw::{c_int, c_void};
 
 ///The broker will call this function immediately after loading the plugin to check it is a supported plugin version.  
@@ -25,11 +28,21 @@ extern "C" fn mosquitto_auth_plugin_version() -> c_int {
 /// Return 0 on success Return > 0 on failure.
 #[no_mangle]
 extern "C" fn mosquitto_auth_plugin_init(
-    _user_data: *mut *mut c_void,
-    _opts: *mut mosquitto_opt,
-    _opt_count: c_int,
+    user_data: *mut *mut c_void,
+    opts: *mut mosquitto_opt,
+    opt_count: c_int,
 ) -> c_int {
     println!("called_from_rust::mosquitto_auth_plugin_init");
+    println!("USER DATA - {:?}", user_data);
+    println!("OPTS - {:?}", opts);
+    println!("OPT COUNT - {:?}", opt_count);
+
+    let plugin = IdentityPlugin::new();
+
+    unsafe {
+        *user_data = Box::into_raw(Box::new(plugin)) as *mut c_void;
+    }
+
     MOSQ_SUCCESS
 }
 
@@ -49,11 +62,16 @@ extern "C" fn mosquitto_auth_plugin_init(
 /// Return 0 on success Return > 0 on failure.
 #[no_mangle]
 extern "C" fn mosquitto_auth_plugin_cleanup(
-    _user_data: *mut c_void,
+    user_data: *mut c_void,
     _opts: *mut mosquitto_opt,
     _opt_count: c_int,
 ) -> c_int {
     println!("called_from_rust::mosquitto_auth_plugin_cleanup");
+
+    unsafe {
+        Box::from_raw(user_data as *mut IdentityPlugin);
+    }
+
     MOSQ_SUCCESS
 }
 
@@ -79,12 +97,31 @@ extern "C" fn mosquitto_auth_plugin_cleanup(
 /// Return 0 on success Return > 0 on failure.
 #[no_mangle]
 extern "C" fn mosquitto_auth_security_init(
-    _user_data: *mut c_void,
-    _opts: *mut mosquitto_opt,
-    _opt_count: c_int,
+    user_data: *mut c_void,
+    opts: *mut mosquitto_opt,
+    opt_count: c_int,
     _reload: bool,
 ) -> c_int {
     println!("called_from_rust::mosquitto_auth_security_init");
+    println!("RAW OPTS - {:?}", opts);
+    println!("OPT COUNT - {:?}", opt_count);
+
+    let opts = unsafe { std::slice::from_raw_parts(opts, opt_count as usize) }
+        .iter()
+        .map(|option| {
+            (
+                unsafe { CStr::from_ptr(option.key) }.to_str().unwrap(),
+                unsafe { CStr::from_ptr(option.value) }.to_str().unwrap(),
+            )
+        })
+        .collect();
+
+    let plugin = unsafe { &mut *(user_data as *mut IdentityPlugin) };
+
+    println!("HASH MAP OPTS - {:?}", opts);
+
+    plugin.configs(opts);
+
     MOSQ_SUCCESS
 }
 

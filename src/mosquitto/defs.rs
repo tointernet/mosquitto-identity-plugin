@@ -12,6 +12,14 @@ pub const MOSQ_ACL_READ: c_int = 1;
 pub const MOSQ_ACL_WRITE: c_int = 2;
 pub const MOSQ_ACL_SUBSCRIBE: c_int = 4;
 
+pub const PLUGIN_SERVER_ADDRESS_KEY: &str = "server_address";
+pub const PLUGIN_SERVER_OAUTH_PATH_KEY: &str = "server_oauth_path";
+pub const PLUGIN_CLIENT_ID_KEY: &str = "client_id";
+pub const PLUGIN_REALM_KEY: &str = "realm";
+pub const PLUGIN_GRANT_TYPE_KEY: &str = "grant_type";
+pub const PLUGIN_SCOPE_KEY: &str = "scope";
+pub const PLUGIN_AUDIENCE_KEY: &str = "audience";
+
 #[repr(C)]
 pub struct mosquitto_opt {
     pub key: *mut c_char,
