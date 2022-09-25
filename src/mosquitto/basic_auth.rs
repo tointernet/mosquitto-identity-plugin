@@ -88,3 +88,16 @@ extern "C" fn mosquitto_auth_start(
     println!("called_from_rust::mosquitto_auth_start");
     MOSQ_PLUGIN_DEFER
 }
+
+#[no_mangle]
+extern "C" fn mosquitto_auth_continue(
+    _user_data: *mut c_void,
+    _client: *mut mosquitto,
+    _method: *const c_char,
+    _data_in: *const c_void,
+    _data_in_len: u16,
+    _data_out: *mut *mut c_void,
+    _data_out_len: *mut u16,
+) -> c_int {
+    MOSQ_PLUGIN_DEFER
+}

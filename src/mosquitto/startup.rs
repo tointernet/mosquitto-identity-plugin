@@ -102,9 +102,9 @@ extern "C" fn mosquitto_auth_security_init(
     opt_count: c_int,
     _reload: bool,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_security_init");
-    println!("RAW OPTS - {:?}", opts);
-    println!("OPT COUNT - {:?}", opt_count);
+    // println!("called_from_rust::mosquitto_auth_security_init");
+    // println!("RAW OPTS - {:?}", opts);
+    // println!("OPT COUNT - {:?}", opt_count);
 
     let opts = unsafe { std::slice::from_raw_parts(opts, opt_count as usize) }
         .iter()
@@ -120,7 +120,14 @@ extern "C" fn mosquitto_auth_security_init(
 
     println!("HASH MAP OPTS - {:?}", opts);
 
-    plugin.configs(opts);
+    match plugin.configs(opts) {
+        Ok(_) => {
+            println!("identity plugin configured")
+        }
+        Err(e) => {
+            eprintln!("err - {}", e);
+        }
+    }
 
     MOSQ_SUCCESS
 }
