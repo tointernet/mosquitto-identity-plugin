@@ -5,11 +5,27 @@ It's important because in IoT platform we don't know where our devices are and w
 the access to our platform is extremely importante for IoT. With this in mind this plugin allow us to create an ACL for the [Mosquitto Broker](https://mosquitto.org/). Each user will have a group
 of Permissions called Roles and these permissions will granted or deny the access for each topic, with that we can managed the publish and the subscription for each topic.
 
+## Mosquitto Plugin
+
+The Mosquitto broker give us a external API to build a custom plugin. This API is exposed in the [mosquitto_plugin.h](https://mosquitto.org/api/files/mosquitto_plugin-h.html).
+
+## Mosquito Startup
+
+When the broker start to running, the broker will check if there is some plugin configured and if was the broker will check for the methods implemented by the plugin.
+
+In the broker startup, the broker will call tree methods: *mosquitto_auth_plugin_version*, *mosquitto_auth_plugin_init* and *mosquitto_auth_security_init*
+
 ## Mosquitto Basic Auth Workflow
+
+The basic authentication API can be used only by implementing the method *mosquitto_auth_unpwd_check*.
+
+If the *mosquitto_auth_unpwd_check* was implemented, each connection that come to the broker, the broker will call the method *mosquitto_auth_unpwd_check*.
+
+If the method returns MOSQ_ERR_SUCCESS = 0 the broker will allow the client to connect. If returns anything > 0 the broker will deny the connection;
 
 ## Mosquitto ACL Workflow
 
-The Mosquitto broker give us a external API to build a custom plugin. This API is exposed in the [mosquitto_plugin.h](https://mosquitto.org/api/files/mosquitto_plugin-h.html) and the mosquitto broker will called each function following the diagram bellow:
+For the Access Controller Layer, different for the basic auth, we will need to implement some methods and the broker will call each method following the diagram bellow:
 
 <div align="center">
 <img src="./docs/flow.png" />
