@@ -1,9 +1,9 @@
+use super::mosquitto::defs::PLUGIN_SERVER_ADDRESS_KEY;
 use crate::mosquitto::defs::{
     PLUGIN_AUDIENCE_KEY, PLUGIN_CLIENT_ID_KEY, PLUGIN_GRANT_TYPE_KEY, PLUGIN_REALM_KEY,
     PLUGIN_SCOPE_KEY, PLUGIN_SERVER_OAUTH_PATH_KEY,
 };
-
-use super::mosquitto::defs::PLUGIN_SERVER_ADDRESS_KEY;
+use log::LevelFilter;
 use std::collections::HashMap;
 
 pub(crate) struct Configs<'c> {
@@ -22,6 +22,8 @@ pub(crate) struct IdentityPlugin<'i> {
 
 impl<'i> IdentityPlugin<'i> {
     pub fn new() -> IdentityPlugin<'i> {
+        std::env::set_var("RUST_LOG", "DEBUG");
+        env_logger::init();
         IdentityPlugin { cfg: None }
     }
 

@@ -15,7 +15,7 @@ extern "C" fn mosquitto_auth_unpwd_check(
     _username: *const c_char,
     _password: *const c_char,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_unpwd_check");
+    log::debug!("auth unpdw check");
     MOSQ_SUCCESS
 }
 

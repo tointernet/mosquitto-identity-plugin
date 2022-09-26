@@ -8,7 +8,6 @@ use std::os::raw::{c_int, c_void};
 /// Your code must simply return the version of the plugin interface you support, i.e.  4.
 #[no_mangle]
 extern "C" fn mosquitto_auth_plugin_version() -> c_int {
-    println!("called_from_rust::mosquitto_auth_plugin_version");
     MOSQ_AUTH_PLUGIN_VERSION
 }
 
@@ -29,15 +28,12 @@ extern "C" fn mosquitto_auth_plugin_version() -> c_int {
 #[no_mangle]
 extern "C" fn mosquitto_auth_plugin_init(
     user_data: *mut *mut c_void,
-    opts: *mut mosquitto_opt,
-    opt_count: c_int,
+    _opts: *mut mosquitto_opt,
+    _opt_count: c_int,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_plugin_init");
-    println!("USER DATA - {:?}", user_data);
-    println!("OPTS - {:?}", opts);
-    println!("OPT COUNT - {:?}", opt_count);
-
     let plugin = IdentityPlugin::new();
+
+    log::debug!("identity plugin init");
 
     unsafe {
         *user_data = Box::into_raw(Box::new(plugin)) as *mut c_void;
@@ -66,7 +62,7 @@ extern "C" fn mosquitto_auth_plugin_cleanup(
     _opts: *mut mosquitto_opt,
     _opt_count: c_int,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_plugin_cleanup");
+    log::debug!("identity plugin cleanup");
 
     unsafe {
         Box::from_raw(user_data as *mut IdentityPlugin);
@@ -102,9 +98,8 @@ extern "C" fn mosquitto_auth_security_init(
     opt_count: c_int,
     _reload: bool,
 ) -> c_int {
-    // println!("called_from_rust::mosquitto_auth_security_init");
-    // println!("RAW OPTS - {:?}", opts);
-    // println!("OPT COUNT - {:?}", opt_count);
+    log::debug!("identity plugin security init");
+    log::debug!("get configurations...");
 
     let opts = unsafe { std::slice::from_raw_parts(opts, opt_count as usize) }
         .iter()
@@ -118,14 +113,12 @@ extern "C" fn mosquitto_auth_security_init(
 
     let plugin = unsafe { &mut *(user_data as *mut IdentityPlugin) };
 
-    println!("HASH MAP OPTS - {:?}", opts);
-
     match plugin.configs(opts) {
         Ok(_) => {
-            println!("identity plugin configured")
+            log::debug!("identity plugin configured")
         }
         Err(e) => {
-            eprintln!("err - {}", e);
+            log::error!("{:?}", e);
         }
     }
 
@@ -158,6 +151,6 @@ extern "C" fn mosquitto_auth_security_cleanup(
     _opt_count: c_int,
     _reload: bool,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_security_cleanup");
+    log::debug!("identity plugin security cleanup");
     MOSQ_SUCCESS
 }
