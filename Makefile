@@ -1,7 +1,7 @@
 install:
 	@rm -rf ./.example/*.so
 	@cargo build --release
-	@cp ./target/release/libmosquitto_identity_plugin.so ./.example/
+	@cp ./target/release/libidentity_plugin.so ./.example/
 
 docker: install
 	@docker build -t ralvescosta/mosquitto-identity ./.example/
