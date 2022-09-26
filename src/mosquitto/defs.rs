@@ -1,11 +1,14 @@
-use std::os::raw::{c_char, c_int, c_long, c_void};
+use std::{
+    ffi::CStr,
+    os::raw::{c_char, c_int, c_long, c_void},
+};
 
 pub const MOSQ_AUTH_PLUGIN_VERSION: c_int = 4;
 
 pub const MOSQ_SUCCESS: c_int = 0;
-pub const MOSQ_UNKNOWN: c_int = 1;
-pub const MOSQ_AUTH: c_int = 11;
-pub const MOSQ_ACL_DENIED: c_int = 12;
+pub const MOSQ_ERR_UNKNOWN: c_int = 1;
+pub const MOSQ_ERR_AUTH: c_int = 11;
+pub const MOSQ_ERR_ACL_DENIED: c_int = 12;
 pub const MOSQ_PLUGIN_DEFER: c_int = 17;
 
 pub const MOSQ_ACL_READ: c_int = 1;
@@ -37,4 +40,12 @@ pub struct mosquitto_acl_msg {
     pub _payloadlen: c_long,
     pub _qos: c_int,
     pub _retain: bool,
+}
+
+pub fn cstr_to_ptr<'a>(cstr: *const c_char) -> Option<&'a str> {
+    if cstr.is_null() {
+        None
+    } else {
+        Some(unsafe { CStr::from_ptr(cstr) }.to_str().unwrap())
+    }
 }

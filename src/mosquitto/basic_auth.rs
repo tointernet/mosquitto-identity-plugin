@@ -1,3 +1,8 @@
+use crate::{
+    identity::IdentityPlugin,
+    mosquitto::defs::{self, MOSQ_ERR_AUTH},
+};
+
 use super::defs::{mosquitto, MOSQ_PLUGIN_DEFER, MOSQ_SUCCESS};
 use std::os::raw::{c_char, c_int, c_void};
 
@@ -10,13 +15,31 @@ use std::os::raw::{c_char, c_int, c_void};
 /// MOSQ_ERR_SUCCESS if the user is authenticated.  MOSQ_ERR_AUTH if authentication failed.  MOSQ_ERR_UNKNOWN for an application specific error.  MOSQ_ERR_PLUGIN_DEFER if your plugin does not wish to handle this check.
 #[no_mangle]
 extern "C" fn mosquitto_auth_unpwd_check(
-    _user_data: *mut c_void,
+    user_data: *mut c_void,
     _client: *mut mosquitto,
-    _username: *const c_char,
-    _password: *const c_char,
+    username: *const c_char,
+    password: *const c_char,
 ) -> c_int {
-    log::debug!("auth unpdw check");
-    MOSQ_SUCCESS
+    log::info!("auth unpdw check");
+
+    let plugin = unsafe { &*(user_data as *mut IdentityPlugin) };
+
+    let username = defs::cstr_to_ptr(username);
+    if username.is_none() {
+        return MOSQ_ERR_AUTH;
+    }
+    let username = username.unwrap();
+
+    let password = defs::cstr_to_ptr(password);
+    if password.is_none() {
+        return MOSQ_ERR_AUTH;
+    }
+    let password = password.unwrap();
+
+    match plugin.auth(username, password) {
+        Ok(_) => MOSQ_SUCCESS,
+        Err(_) => MOSQ_ERR_AUTH,
+    }
 }
 
 /// This function is OPTIONAL.  Only include this function in your plugin if you are making TLS-PSK checks.
@@ -49,7 +72,6 @@ extern "C" fn mosquitto_auth_psk_key_get(
     _key: *mut c_char,
     _max_key_len: c_int,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_psk_key_get");
     MOSQ_PLUGIN_DEFER
 }
 
@@ -85,7 +107,7 @@ extern "C" fn mosquitto_auth_start(
     _data_out: *mut *mut c_void,
     _data_out_len: *mut u16,
 ) -> c_int {
-    println!("called_from_rust::mosquitto_auth_start");
+    log::debug!("mosquitto_auth_start");
     MOSQ_PLUGIN_DEFER
 }
 

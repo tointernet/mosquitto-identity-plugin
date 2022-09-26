@@ -3,9 +3,10 @@ use crate::mosquitto::defs::{
     PLUGIN_AUDIENCE_KEY, PLUGIN_CLIENT_ID_KEY, PLUGIN_GRANT_TYPE_KEY, PLUGIN_REALM_KEY,
     PLUGIN_SCOPE_KEY, PLUGIN_SERVER_OAUTH_PATH_KEY,
 };
-use log::LevelFilter;
+use serde::Serialize;
 use std::collections::HashMap;
 
+#[derive(Debug, Clone, Copy)]
 pub(crate) struct Configs<'c> {
     server_address: &'c str,
     server_oauth_path: &'c str,
@@ -14,6 +15,17 @@ pub(crate) struct Configs<'c> {
     grant_type: &'c str,
     scope: &'c str,
     audience: &'c str,
+}
+
+#[derive(Debug, Serialize)]
+pub(crate) struct AuthRequest<'a> {
+    client_id: &'a str,
+    realm: &'a str,
+    grant_type: &'a str,
+    username: &'a str,
+    password: &'a str,
+    scope: &'a str,
+    audience: &'a str,
 }
 
 pub(crate) struct IdentityPlugin<'i> {
@@ -81,5 +93,35 @@ impl<'i> IdentityPlugin<'i> {
         });
 
         Ok(())
+    }
+
+    pub fn auth(&self, username: &str, password: &str) -> Result<(), &'i str> {
+        let cfg = self.cfg.unwrap();
+        let path = format!("{}{}", cfg.server_address, cfg.server_oauth_path);
+
+        let body = AuthRequest {
+            client_id: cfg.client_id,
+            realm: cfg.realm,
+            grant_type: cfg.grant_type,
+            username,
+            password,
+            scope: cfg.scope,
+            audience: cfg.audience,
+        };
+
+        match ureq::post(&path)
+            .set("Content-Type", "application/json")
+            .send_string(&serde_json::to_string(&body).unwrap())
+        {
+            Ok(_) => Ok(()),
+            Err(ureq::Error::Status(code, res)) => {
+                log::error!("status: {} ,res: {:?}", code, res.into_string());
+                Err("identity server error")
+            }
+            Err(e) => {
+                log::error!("{:?}", e.to_string());
+                Err("unexpected error")
+            }
+        }
     }
 }

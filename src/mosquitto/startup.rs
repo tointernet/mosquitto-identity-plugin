@@ -33,7 +33,7 @@ extern "C" fn mosquitto_auth_plugin_init(
 ) -> c_int {
     let plugin = IdentityPlugin::new();
 
-    log::debug!("identity plugin init");
+    log::debug!("mosquitto_auth_plugin_init :: identity plugin init");
 
     unsafe {
         *user_data = Box::into_raw(Box::new(plugin)) as *mut c_void;
@@ -99,7 +99,7 @@ extern "C" fn mosquitto_auth_security_init(
     _reload: bool,
 ) -> c_int {
     log::debug!("identity plugin security init");
-    log::debug!("get configurations...");
+    log::info!("mosquitto_auth_security_init :: get configurations...");
 
     let opts = unsafe { std::slice::from_raw_parts(opts, opt_count as usize) }
         .iter()
@@ -115,7 +115,7 @@ extern "C" fn mosquitto_auth_security_init(
 
     match plugin.configs(opts) {
         Ok(_) => {
-            log::debug!("identity plugin configured")
+            log::info!("mosquitto_auth_security_init :: identity plugin configured")
         }
         Err(e) => {
             log::error!("{:?}", e);
