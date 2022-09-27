@@ -1,21 +1,32 @@
 # Mosquitto Identity Plugin
 
+[![ci](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml)
+
 In a IoT platform one of the most important thing is ensure that, each device will be access only the resources which device is allowed to access.
 It's important because in IoT platform we don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
 the access to our platform is extremely importante for IoT. With this in mind this plugin allow us to create an ACL for the [Mosquitto Broker](https://mosquitto.org/). Each user will have a group
 of Permissions called Roles and these permissions will granted or deny the access for each topic, with that we can managed the publish and the subscription for each topic.
 
+# Table of content
+
+- [Mosquitto Plugin](#mosquitto-plugin)
+  - [Broker Startup](#broker-startup)
+  - [Mosquitto Basic Auth Workflow](#mosquitto-basic-auth-workflow)
+  - [Mosquitto ACL Workflow](#mosquitto-acl-workflow)
+- [Requirements](#requirements)
+- [Example](#run-the-example)
+
 ## Mosquitto Plugin
 
 The Mosquitto broker give us a external API to build a custom plugin. This API is exposed in the [mosquitto_plugin.h](https://mosquitto.org/api/files/mosquitto_plugin-h.html).
 
-## Mosquito Startup
+### Broker Startup
 
 When the broker start to running, the broker will check if there is some plugin configured and if was the broker will check for the methods implemented by the plugin.
 
 In the broker startup, the broker will call tree methods: *mosquitto_auth_plugin_version*, *mosquitto_auth_plugin_init* and *mosquitto_auth_security_init*
 
-## Mosquitto Basic Auth Workflow
+### Mosquitto Basic Auth Workflow
 
 The basic authentication API can be used only by implementing the method *mosquitto_auth_unpwd_check*.
 
@@ -23,7 +34,7 @@ If the *mosquitto_auth_unpwd_check* was implemented, each connection that come t
 
 If the method returns MOSQ_ERR_SUCCESS = 0 the broker will allow the client to connect. If returns anything > 0 the broker will deny the connection;
 
-## Mosquitto ACL Workflow
+### Mosquitto ACL Workflow
 
 For the Access Controller Layer, different for the basic auth, we will need to implement some methods and the broker will call each method following the diagram bellow:
 
@@ -58,6 +69,4 @@ make docker
 - [Embedded Rust](https://docs.rust-embedded.org/book/interoperability/rust-with-c.html)
 - [Mosquitto Plugin Documentation](https://mosquitto.org/api/files/mosquitto_plugin-h.html)
 - [Rust JWT Plugin](https://github.com/wiomoc/mosquitto-jwt-auth)
-
-### Exemples
 - [Rust Mosquitto Plugin](https://github.com/TotalKrill/mosquitto_plugin)
