@@ -6,14 +6,14 @@ use std::{
 pub const MOSQ_AUTH_PLUGIN_VERSION: c_int = 4;
 
 pub const MOSQ_SUCCESS: c_int = 0;
-pub const MOSQ_ERR_UNKNOWN: c_int = 1;
+// pub const MOSQ_ERR_UNKNOWN: c_int = 1;
 pub const MOSQ_ERR_AUTH: c_int = 11;
-pub const MOSQ_ERR_ACL_DENIED: c_int = 12;
+// pub const MOSQ_ERR_ACL_DENIED: c_int = 12;
 pub const MOSQ_PLUGIN_DEFER: c_int = 17;
 
-pub const MOSQ_ACL_READ: c_int = 1;
-pub const MOSQ_ACL_WRITE: c_int = 2;
-pub const MOSQ_ACL_SUBSCRIBE: c_int = 4;
+// pub const MOSQ_ACL_READ: c_int = 1;
+// pub const MOSQ_ACL_WRITE: c_int = 2;
+// pub const MOSQ_ACL_SUBSCRIBE: c_int = 4;
 
 pub const PLUGIN_SERVER_ADDRESS_KEY: &str = "identity_server_address";
 pub const PLUGIN_SERVER_OAUTH_PATH_KEY: &str = "identity_server_oauth_path";

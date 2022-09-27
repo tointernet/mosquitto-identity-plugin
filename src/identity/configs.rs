@@ -70,3 +70,55 @@ impl<'c> Configs<'c> {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new_config_correctly() {
+        let mut map: HashMap<&str, &str> = HashMap::new();
+        map.insert("identity_server_address", "address");
+        map.insert("identity_server_oauth_path", "path");
+        map.insert("identity_client_id", "id");
+        map.insert("identity_realm", "realm");
+        map.insert("identity_grant_type", "type");
+        map.insert("identity_scope", "scope");
+        map.insert("identity_audience", "audience");
+
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_ok());
+    }
+
+    #[test]
+    fn test_new_config_when_some_values_missing() {
+        let mut map: HashMap<&str, &str> = HashMap::new();
+
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+
+        map.insert("identity_server_address", "address");
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+
+        map.insert("identity_server_oauth_path", "path");
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+
+        map.insert("identity_client_id", "id");
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+
+        map.insert("identity_realm", "realm");
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+
+        map.insert("identity_grant_type", "type");
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+
+        map.insert("identity_scope", "scope");
+        let cfg = Configs::new(&map);
+        assert!(cfg.is_err());
+    }
+}
