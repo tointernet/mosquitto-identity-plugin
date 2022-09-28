@@ -2,8 +2,8 @@
 
 [![ci](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/tointernet/mosquitto.identity.plugin/branch/main/graph/badge.svg?token=X9L45YZD95)](https://codecov.io/gh/tointernet/mosquitto.identity.plugin)
 
-In a IoT platform one of the most important thing is ensure each device can access only the resources that device is allowed to access.
-It's important because in IoT platform we don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
+In a IoT platform one of the most important thing is to ensure that each device can access only the resources that the device is allowed to access.
+It's important because on the IoT platform we don't know where our devices are and who has them. So the basic security principle to reduce as much as we can
 the access to our platform is extremely importante for IoT. With this in mind this plugin allow us to create an ACL for the [Mosquitto Broker](https://mosquitto.org/). Each user will have a group
 of Permissions called Roles and these permissions will granted or deny the access for each topic, with that we can managed the publish and the subscription for each topic.
 
