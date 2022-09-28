@@ -1,6 +1,6 @@
 # Mosquitto Identity Plugin
 
-[![ci](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml)
+[![ci](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/tointernet/mosquitto.identity.plugin/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/tointernet/mosquitto.identity.plugin/branch/main/graph/badge.svg?token=X9L45YZD95)](https://codecov.io/gh/tointernet/mosquitto.identity.plugin)
 
 In a IoT platform one of the most important thing is ensure that, each device will be access only the resources which device is allowed to access.
 It's important because in IoT platform we don't know where our devices are and wo is with. So the basic security principle to reduce as much as we can
