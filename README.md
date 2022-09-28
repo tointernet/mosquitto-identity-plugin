@@ -4,7 +4,7 @@
 
 In a IoT platform one of the most important thing is to ensure that each device can access only the resources that the device is allowed to access.
 It's important because on the IoT platform we don't know where our devices are and who has them. So the basic security principle to reduce as much as we can
-the access to our platform is extremely importante for IoT. With this in mind this plugin allow us to create an ACL for the [Mosquitto Broker](https://mosquitto.org/). Each user will have a group
+the access to our platform is extremely importante for IoT. With this in mind this plugin allow us to overwrite the basic connection authentication and create an ACL for the [Mosquitto Broker](https://mosquitto.org/). Each user will have a group
 of Permissions called Roles and these permissions will granted or deny the access for each topic, with that we can managed the publish and the subscription for each topic.
 
 # Table of content
